@@ -5,7 +5,6 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const app = express();
-const port = process.env.PORT || 3000;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(express.json({ limit: "1mb" }));
@@ -113,6 +112,32 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true, model: "gpt-4o-mini" });
 });
 
-app.listen(port, () => {
-  console.log(`AI chatbot is running at http://localhost:${port}`);
+app.use("/api", (_req, res) => {
+  res.status(404).json({ error: "요청한 API 경로를 찾을 수 없습니다." });
 });
+
+app.use((error, _req, res, next) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+
+  console.error("Express error:", error?.message || error);
+  const status = error?.status === 400 ? 400 : 500;
+  const message =
+    status === 400
+      ? "요청 형식이 올바르지 않습니다."
+      : "서버에서 요청을 처리하지 못했습니다.";
+
+  return res.status(status).json({ error: message });
+});
+
+// Vercel imports this application as a serverless function.
+export default app;
+
+// Keep the regular port listener for local `npm start` / `npm run dev` usage.
+if (process.env.VERCEL !== "1") {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`AI chatbot is running at http://localhost:${port}`);
+  });
+}

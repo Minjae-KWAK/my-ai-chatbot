@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="gpt-4o-mini를 사용하는 간단한 AI 챗봇"
+    />
+    <title>Orbit AI Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Orbit AI 홈">
+          <span class="brand-mark" aria-hidden="true">
+            <span></span>
+          </span>
+          <span>Orbit</span>
+        </a>
+
+        <div class="status" aria-label="서비스 상태">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>gpt-4o-mini</span>
+        </div>
+
+        <button class="clear-button" id="clearButton" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M10 11v6M14 11v6M9 7l1-3h4l1 3m-9 0 1 14h10l1-14" />
+          </svg>
+          <span>대화 지우기</span>
+        </button>
+      </header>
+
+      <section class="chat-panel" aria-label="AI 채팅">
+        <div class="messages" id="messages" aria-live="polite"></div>
+
+        <div class="composer-wrap">
+          <div class="suggestions" id="suggestions" aria-label="추천 질문">
+            <button type="button" data-prompt="오늘 할 일을 효율적으로 정리해 줘">
+              오늘 할 일 정리
+            </button>
+            <button type="button" data-prompt="흥미로운 과학 상식 하나 알려 줘">
+              과학 상식
+            </button>
+            <button type="button" data-prompt="짧은 아이디어 브레인스토밍을 도와줘">
+              아이디어 얻기
+            </button>
+          </div>
+
+          <form class="composer" id="chatForm">
+            <label class="sr-only" for="messageInput">메시지 입력</label>
+            <textarea
+              id="messageInput"
+              rows="1"
+              maxlength="8000"
+              placeholder="무엇이든 물어보세요"
+              required
+            ></textarea>
+            <button class="send-button" id="sendButton" type="submit" aria-label="메시지 보내기">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m5 12 14-7-4.2 14-3.2-5.4L5 12Z" />
+                <path d="m11.6 13.6 3.8-3.8" />
+              </svg>
+            </button>
+          </form>
+          <p class="disclaimer">AI는 실수할 수 있습니다. 중요한 정보는 한 번 더 확인하세요.</p>
+        </div>
+      </section>
+    </main>
+
+    <template id="messageTemplate">
+      <article class="message">
+        <div class="avatar" aria-hidden="true"></div>
+        <div class="message-body">
+          <p class="message-label"></p>
+          <div class="message-content"></div>
+        </div>
+      </article>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
